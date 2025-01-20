@@ -9,10 +9,10 @@ enum Direction {
     East = 2,
     South = 3
 };
-
-void input_init(void);
+void Clear();
 void input_enter_off(void);
 void input_enter_on(void);
 enum Direction get_input(void);
+int random_int(int , int);
 
 #endif
