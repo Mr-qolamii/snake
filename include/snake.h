@@ -17,11 +17,13 @@ public:
   void update_next_direction(enum Direction direction);
   void update_direction(enum Direction direction);
   void set_snake_food(pair<int, int> snake_food);
+  void set_wall(pair<int, int> walls[]);
   enum Direction get_direction();
   void validate_direction();
   void clear_snake_world();
   void initialize_snake();
   void update_movement();
+  bool is_game_end();
   
   vector<pair<int, int>> snake_parts;
   pair<int, int> snake_head;
@@ -35,6 +37,7 @@ private:
   enum Direction direction;
   enum Direction next_direction;
   pair<int, int> snake_food;
+  pair<int, int> walls[WALL_COUNT];
   int snake_world_array[MAP_HEIGHT][MAP_WIDTH];
 
 };

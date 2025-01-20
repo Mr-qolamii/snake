@@ -1,10 +1,10 @@
-#include "snake.h"
+#include "../include/snake.h"
 #include <pthread.h>
 #include <iostream>
 #include <vector>
 #include <utility>
-#include "snake_map.h"
-#include "macros.h"
+#include "../include/snake_map.h"
+#include "../include/macros.h"
 
 using namespace std;
 
@@ -88,6 +88,7 @@ void Snake::validate_direction(void)
 void Snake::update_movement(void)
 {
     pair<int, int> movement_part;
+    
     switch (get_direction())
     {
     case West:
@@ -103,9 +104,11 @@ void Snake::update_movement(void)
         movement_part = make_pair(snake_head.first + 1, snake_head.second);
         break;
     }
+
     snake_head = movement_part;
     snake_parts.push_back(movement_part);
     food_eaten = snake_head.first == snake_food.first && snake_head.second == snake_food.second;
+
     if (food_eaten)
     {
         length++;
@@ -116,11 +119,12 @@ void Snake::update_movement(void)
         snake_world_array[tail.first][tail.second]--;
         snake_parts.erase(snake_parts.begin());
     }
+
     int head_value = ++snake_world_array[snake_head.first][snake_head.second];
+
     if (head_value > 1)
-    {
         is_dead = true;
-    }
+    
 }
 
 void Snake::set_snake_food(pair<int, int> snake_food)
@@ -139,6 +143,12 @@ void Snake::clear_snake_world(void)
     }
 }
 
+void Snake::set_wall(pair<int, int> walls[]){
+    for (int i = 0; i < WALL_COUNT; ++i) {
+        this->walls[i] = walls[i];
+    }
+}
+
 void Snake::initialize_snake(void)
 {
     for (int i = 0; i < INITIAL_SNAKE_LENGTH; i++)
@@ -148,4 +158,25 @@ void Snake::initialize_snake(void)
         snake_world_array[snake_part.first][snake_part.second] = 1;
     }
     snake_head = snake_parts[snake_parts.size() - 1];
+}
+
+bool Snake::is_game_end()
+{
+    bool result = false;
+
+    if (this->snake_head.first < 1 || this->snake_head.first >= MAP_HEIGHT-1 || this->snake_head.second < 1 || this->snake_head.second >= MAP_WIDTH-1)
+    {
+        result = true;
+    }
+    for (int i = 0; i < WALL_COUNT; ++i) {
+        if (this->snake_head.second == this->walls[i].first && this->snake_head.first == this->walls[i].second){
+            return true;
+        }
+    }
+
+    if (this->is_dead)
+    {
+        result = true;
+    }
+    return result;
 }

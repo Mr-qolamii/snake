@@ -10,7 +10,9 @@ public:
   SnakeMap(Snake *snake);
   void redraw();
   pair<int, int> snake_food;
+  pair<int, int> walls[WALL_COUNT];
   void update_snake_food(bool force_update);
+  void update_wall();
   void update_score();
   void clear_map();
 private:

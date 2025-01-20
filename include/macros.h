@@ -3,9 +3,12 @@
 
 #define MAP_WIDTH 36
 #define MAP_HEIGHT 20
+#define WALL_COUNT 20
 #define MAP_CHAR '+'
-#define MAP_END 30
-#define SNAKE_CHAR '#'
+#define WALL_CHAR '#'
+#define H_WALL_CHAR 'I'
+#define V_WALL_CHAR '='
+#define SNAKE_CHAR '*'
 #define SNAKE_HEAD_WEST '@'
 #define SNAKE_HEAD_NORTH '@'
 #define SNAKE_HEAD_EAST '@'

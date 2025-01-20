@@ -1,11 +1,11 @@
-#include "snake_map.h"
+#include "../include/snake_map.h"
 #include <pthread.h>
 #include <iostream>
 #include <vector>
 #include <utility>
-#include <stdlib.h>
+#include <cstdlib>
 #include <time.h>
-#include "macros.h"
+#include "../include/macros.h"
 
 using namespace std;
 
@@ -15,15 +15,13 @@ SnakeMap::SnakeMap(Snake *snake)
     clear_map();
     srand(time(NULL));
     update_snake_food(true);
+    update_wall();
 }
 
 void SnakeMap::redraw(void)
 {
+
     clear_map();
-    for (int i = 0; i < MAP_END; i++)
-    {
-        cout << endl;
-    }
     update_score();
     vector<pair<int, int>> snake_parts = snake->snake_parts;
     for (int i = 0; i < snake_parts.size(); i++)
@@ -33,6 +31,9 @@ void SnakeMap::redraw(void)
     }
     update_snake_head(snake);
     update_snake_food(false);
+    for (int i = 0; i < WALL_COUNT; i++){
+        map_array[walls[i].second][walls[i].first] = WALL_CHAR;
+    }
     map_array[snake_food.first][snake_food.second] = SNAKE_FOOD_CHAR;
     for (int i = MAP_HEIGHT - 1; i >= 0; i--)
     {
@@ -47,10 +48,15 @@ void SnakeMap::redraw(void)
             else if (map_array[i][j] == SNAKE_FOOD_CHAR)
                  cout << "\033[1;31m" << map_array[i][j] << ' ';
             
+            else if (map_array[i][j] == H_WALL_CHAR || map_array[i][j] == V_WALL_CHAR)
+                 cout << "\033[1;34m" << map_array[i][j] << ' ';
+
+            else if (map_array[i][j] == MAP_CHAR)
+                cout << "\033[0;30m" << map_array[i][j] << ' ' ;
+
             else
                 cout << "\033[0;0m" << map_array[i][j] << ' ' ;
 
-            
         }
         cout << endl;
     }
@@ -62,11 +68,11 @@ void SnakeMap::update_snake_food(bool force_update)
     {
         while (true)
         {
-            int random_i = rand() % MAP_WIDTH;
-            int random_j = rand() % MAP_HEIGHT;
-            if (map_array[random_i][random_j] == MAP_CHAR)
+            int width = random_int(2, MAP_WIDTH-2);
+            int height = random_int(2, MAP_HEIGHT-2);
+            if (map_array[width][height] == MAP_CHAR )
             {
-                snake_food = make_pair(random_i, random_j);
+                snake_food = make_pair(width, height);
                 snake->set_snake_food(snake_food);
                 snake->food_eaten = false;
                 break;
@@ -75,13 +81,39 @@ void SnakeMap::update_snake_food(bool force_update)
     }
 }
 
+void SnakeMap::update_wall() {
+    for (int i = 0; i < WALL_COUNT; ++i) {
+        while (true){
+            int width = random_int(2, MAP_WIDTH - 2);
+            int height = random_int(2, MAP_HEIGHT - 2);
+            if (map_array[width][height] == MAP_CHAR){
+                walls[i] = make_pair(width, height);
+                break;
+            }
+        }
+    }
+    snake->set_wall(walls);
+}
+
 void SnakeMap::clear_map()
 {
     for (int i = MAP_HEIGHT-1; i >= 0; i--)
-    {
-        for (int j = MAP_WIDTH-1; j >= 0 ; j--)
+    {   
+        if (i == 0 or i == MAP_HEIGHT-1)
         {
-            map_array[i][j] = MAP_CHAR;
+            for (int j = MAP_WIDTH-1; j >= 0 ; j--)
+                map_array[i][j] = V_WALL_CHAR;
+     
+        }
+        else
+        {
+            for (int j = MAP_WIDTH-1; j >= 0 ; j--){
+                if (j==0 or j==MAP_WIDTH-1)
+                    map_array[i][j] = H_WALL_CHAR;
+                else 
+                    map_array[i][j] = MAP_CHAR;
+                
+                }
         }
     }
 }
@@ -111,5 +143,5 @@ void SnakeMap::update_snake_head(Snake *snake)
 
 void SnakeMap::update_score(void)
 {
-    cout << "Score:" << snake->length * 5 - 15 << endl;
+    cout << "Score:" << snake->length * 5 - 13 << endl;
 }
