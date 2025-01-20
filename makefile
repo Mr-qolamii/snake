@@ -1,2 +1,2 @@
 build:
-	g++ -std=c++11 main.cpp snake.cpp input.cpp snake_map.cpp -o snake -lpthread
+	g++  src/main.cpp src/snake.cpp src/input.cpp src/snake_map.cpp -o snake -lpthread 
