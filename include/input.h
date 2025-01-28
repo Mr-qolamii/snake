@@ -2,7 +2,7 @@
 #define _input_h
 
 
-enum Direction {
+enum class Direction {
     Error = -1,
     West = 0,
     North = 1,
