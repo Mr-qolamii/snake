@@ -35,26 +35,26 @@ void Snake::update_direction(enum Direction direction)
     sem_wait(&this->snake_sema);
     switch (direction)
     {
-    case West:
-        if (this->direction != East)
+        case Direction::West:
+        if (this->direction != Direction::East)
         {
             this->direction = direction;
         }
         break;
-    case North:
-        if (this->direction != South)
+        case Direction::North:
+        if (this->direction != Direction::South)
         {
             this->direction = direction;
         }
         break;
-    case East:
-        if (this->direction != West)
+    case Direction::East:
+        if (this->direction != Direction::West)
         {
             this->direction = direction;
         }
         break;
-    case South:
-        if (this->direction != North)
+    case Direction::South:
+        if (this->direction != Direction::North)
         {
             this->direction = direction;
         }
@@ -70,7 +70,7 @@ void Snake::update_next_direction(enum Direction direction)
 
 enum Direction Snake::get_direction(void)
 {
-    enum Direction result = East;
+    enum Direction result = Direction::East;
     sem_wait(&this->snake_sema);
     result = this->direction;
     sem_post(&this->snake_sema);
@@ -79,7 +79,7 @@ enum Direction Snake::get_direction(void)
 
 void Snake::validate_direction(void)
 {
-    if (next_direction != Error)
+    if (next_direction != Direction::Error)
     {
         update_direction(next_direction);
     }
@@ -91,16 +91,16 @@ void Snake::update_movement(void)
     
     switch (get_direction())
     {
-    case West:
+    case Direction::West:
         movement_part = make_pair(snake_head.first, snake_head.second - 1);
         break;
-    case North:
+    case Direction::North:
         movement_part = make_pair(snake_head.first - 1, snake_head.second);
         break;
-    case East:
+    case Direction::East:
         movement_part = make_pair(snake_head.first, snake_head.second + 1);
         break;
-    case South:
+    case Direction::South:
         movement_part = make_pair(snake_head.first + 1, snake_head.second);
         break;
     }

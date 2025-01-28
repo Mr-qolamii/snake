@@ -124,16 +124,16 @@ void SnakeMap::update_snake_head(Snake *snake)
 
     switch (snake->get_direction())
     {
-    case West:
+        case Direction::West:
         snake_head_char = SNAKE_HEAD_WEST;
         break;
-    case North:
+        case Direction::North:
         snake_head_char = SNAKE_HEAD_NORTH;
         break;
-    case East:
+        case Direction::East:
         snake_head_char = SNAKE_HEAD_EAST;
         break;
-    case South:
+        case Direction::South:
         snake_head_char = SNAKE_HEAD_SOUTH;
         break;
     }

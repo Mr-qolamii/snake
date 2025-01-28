@@ -43,23 +43,24 @@ int random_int(int min, int max){
         return dis(gen);
     }
 
-enum Direction get_input() {
-    enum Direction result = East;
+
+Direction get_input() {
+    Direction result = Direction::East;
     switch (getchar()) {
         case 'd':
-            result = West;
+            result = Direction::West;
             break;
         case 's':
-            result = North;
+            result = Direction::North;
             break;
         case 'a':
-            result = East;
+            result = Direction::East;
             break;
         case 'w':
-            result = South;
+            result = Direction::South;
             break;
         default:
-            result = Error;
+            result = Direction::Error;
             break;
     }
     return result;
